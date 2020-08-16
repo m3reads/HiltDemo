@@ -1,39 +1,21 @@
 package com.example.hiltdemo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.hiltdemo.app.MainViewModel
 import com.example.hiltdemo.app.adapter.RepoAdapter
-import com.example.hiltdemo.model.GithubDataModel
 import com.example.hiltdemo.model.ResultData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var repositoriesAdapter: RepoAdapter
-    private val repositoryObserver = Observer<ResultData<GithubDataModel?>> { resultData ->
-        when(resultData) {
-            is ResultData.Loading -> {
 
-            }
-            is ResultData.Success -> {
-                val repositoriesModel = resultData.data
-                repositoriesAdapter.submitList(repositoriesModel)
-            }
-            is ResultData.Failed -> {
-            }
-            is ResultData.Exception -> {
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,20 +33,29 @@ class MainActivity : AppCompatActivity() {
         list.observe(this, Observer { results->
             when(results){
                 is ResultData.Loading -> {
-
+                    //set loading UI state
+                    setLoadingUIState(true)
                 }
                 is ResultData.Success -> {
-                    val githubDataModel = results.data
+                    setLoadingUIState(false)
 
+                    val githubDataModel = results.data
                     adapter.submitList(githubDataModel)
                 }
                 is ResultData.Exception -> {
-
+                    //handle exception
                 }
                 is ResultData.Failed-> {
 
                 }
             }
         })
+    }
+
+    private fun setLoadingUIState(inLoadingState: Boolean) {
+        if (inLoadingState)
+            progress_circular.visibility = View.VISIBLE
+        else
+            progress_circular.visibility = View.GONE
     }
 }

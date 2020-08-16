@@ -10,7 +10,7 @@ import com.example.hiltdemo.model.DiffUtilGithubDataModelItem
 import com.example.hiltdemo.model.GithubDataModel
 import kotlinx.android.synthetic.main.row_repo_item.view.*
 
-class RepoAdapter:ListAdapter<GithubDataModel.GithubDataModelItem,ViewHolder>(
+class RepoAdapter: ListAdapter<GithubDataModel.GithubDataModelItem,ViewHolder>(
     DiffUtilGithubDataModelItem()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

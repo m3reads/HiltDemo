@@ -16,7 +16,7 @@ class MainViewModel @ViewModelInject constructor(val dataUseCase: DataUseCase): 
 
     fun getRepoList() : LiveData<ResultData<GithubDataModel>> {
         return flow {
-//            emit(ResultData.Loading(nothing))
+//            emit(ResultData.Loading("loading"))
             try {
                 emit(dataUseCase.getReposList())
             } catch (e: Exception) {
